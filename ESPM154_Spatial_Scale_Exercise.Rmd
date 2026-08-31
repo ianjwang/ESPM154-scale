@@ -1,0 +1,133 @@
+---
+title: "ESPM 154: Scaling Effects and Genetic Diversity"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
+                     fig.width = 9, fig.height = 7)
+```
+
+# Overview
+
+Spatial genetic patterns may depend on the scale at which we observe them. In this exercise, we will examine a simulated landscape containing processes that influence genetic diversity, potentially at different spatial scales. 
+
+We will work on rescaling landscapes to examine patterns and their relationships at different scales. We will also learn how to work with raster data and how to perform and interpret a basic regression analysis.
+
+# Learning objectives
+
+By the end of the exercise, you should be able to:
+
+1. Define spatial **grain**.
+2. Explain how changes in scale can alter an observed ecological relationship.
+3. Distinguish local relationships from broad regional relationships.
+4. Explain why a relationship found at one scale may not apply at another.
+5. Understand how to call R functions by supplying the required arguments.
+
+# Grain and extent
+
+**Grain** is the size of the individual observational unit. The original landscape is divided into 1-km cells. A grain of 10 km combines these into 10-by-10-km units.
+
+**Extent** is the total area included in the analysis. Here it remains a 120-by-120-km landscape.
+
+Changing grain can alter the variation visible in a map, the number of observations, the apparent strength or direction of a relationship, and which ecological process appears most important.
+
+# Load the landscape
+
+The landscape has already been created for you and saved as a CSV file. Make sure `ESPM154_genetic_diversity_landscape.csv` is in the same folder as this R Markdown file.
+
+Run the following line to read the landscape into R:
+
+```{r load-landscape}
+landscape <- read.csv("ESPM154_genetic_diversity_landscape.csv")
+```
+
+Look at the first few rows:
+
+```{r inspect-landscape}
+head(landscape)
+```
+
+The dataset contains one row for each 1-km cell and five columns: `x`, `y`, `temperature`, `precipitation`, and `genetic_diversity`.
+
+# Define the functions
+
+Run the following chunk once. It reads in the functions we will use in the rest of the exercise. You do not need to modify the code inside this chunk.
+
+```{r functions, echo=FALSE}
+source("scale_functions.R")
+```
+
+# Step 1: Rescale the landscape
+
+The first function changes the spatial grain. Run the following function call with **Ctrl+Enter** on Windows or **Command+Enter** on a Mac.
+
+```{r first-rescale}
+scale_1km <- rescale_landscape(grain_km = 1)
+```
+
+The arrow `<-` assigns the output of the function to an object named `scale_1km`. The object now contains the genetic diversity and environmental data summarized at a 1-km grain.
+
+Look at the first few rows:
+
+```{r inspect-first-rescale}
+head(scale_1km)
+```
+
+# Step 2: Plot the rescaled landscape
+
+Before fitting a model, look at the spatial pattern of the response variable (genetic diversity) and the explanatory variables (temperature and precipitation) together:
+
+```{r first-map}
+plot_landscape(scale_1km)
+```
+
+The three maps show genetic diversity, temperature, and precipitation at exactly the same spatial grain. Compare their spatial patterns before looking at the regression results.
+
+**Discuss at your tables**: Describe the spatial pattern of genetic diversity. Which parts of its pattern appear similar to temperature or precipitation, and which parts do not?
+
+
+# Step 3: Analyze the rescaled landscape
+
+Now pass the same rescaled object to the analysis function:
+
+```{r first-analysis}
+analyze_landscape(scale_1km)
+```
+
+
+
+**Discuss at your tables**: At 1 km, what are the signs of the temperature and precipitation coefficients (positive/negative)? Which has the larger absolute coefficient? What does this coefficient mean regarding the relationship between genetic diversity and temperature or precipitation?
+
+
+# Step 4: Re-analyze the landscape
+
+So, we have looked at three functions that we can use to examine the relationships on a landscape in this exercise:
+1) `rescale_landscape()` changes the observational grain.
+2) `plot_landscape()` displays the rescaled variable rasters.
+3) `analyze_landscape()` fits the multivariate regression and plots the two bivariate relationships and standardized coefficients. 
+
+Use these to answer the challenge: How did I simulate the map of genetic diversity? i.e. What is the "true" underlying relationship between genetic diversity, temperature, and precipitation?
+
+# Workspace
+
+You can use the code chunk below to perform any additional analysis you want to run, using the three functions we loaded for this exercise. You can also create additional code chunks using **Ctrl+I** on Windows or **Command+I** on a Mac.
+
+```{r workspace}
+
+
+
+
+
+
+
+
+
+
+
+```
