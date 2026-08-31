@@ -44,7 +44,9 @@ The landscape has already been created for you and saved as a CSV file. Make sur
 Run the following line to read the landscape into R:
 
 ```{r load-landscape}
-landscape <- read.csv("ESPM154_genetic_diversity_landscape.csv")
+landscape <- read.csv(
+  file.path(dirname(knitr::current_input()), "ESPM154_genetic_diversity_landscape.csv")
+)
 ```
 
 Look at the first few rows:
